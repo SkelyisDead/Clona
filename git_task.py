@@ -1,13 +1,21 @@
-import pygame,random
-pygame.init()
-def f():
- return [[(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(10)] for _ in range(10)]
-s=pygame.display.set_mode((500,500));pygame.display.set_caption("Procedural Color Grid (Press SPACE to Regenerate)");data=f();r=True
-while r:
- s.fill((0,0,0))
- for y in range(10):
-  for x in range(10):pygame.draw.rect(s,data[y][x],(x*50,y*50,50,50))
- pygame.display.flip()
- for e in pygame.event.get():
-  r=False if e.type==pygame.QUIT else r;data=f() if e.type==pygame.KEYDOWN and e.key==pygame.K_SPACE else data
-pygame.quit()
+import time
+
+# Funcție cu nume descriptiv care calculează suma
+def calculeaza_suma(numar_unu, numar_doi):
+    """Calculează și returnează suma a două numere."""
+    return numar_unu + numar_doi
+
+def main():
+    # Variabile cu nume sugestive
+    termen_unu = 5
+    termen_doi = 10
+    
+    while True:
+        rezultat = calculeaza_suma(termen_unu, termen_doi)
+        print(f"Rezultatul este: {rezultat}")
+        
+        # Regenerare rezultat la fiecare 5 secunde [cite: 214]
+        time.sleep(5)
+
+if __name__ == "__main__":
+    main()
