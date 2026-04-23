@@ -1,13 +1,60 @@
-import pygame,random
-pygame.init()
-def f():
- return [[(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(10)] for _ in range(10)]
-s=pygame.display.set_mode((500,500));pygame.display.set_caption("Procedural Color Grid (Press SPACE to Regenerate)");data=f();r=True
-while r:
- s.fill((0,0,0))
- for y in range(10):
-  for x in range(10):pygame.draw.rect(s,data[y][x],(x*50,y*50,50,50))
- pygame.display.flip()
- for e in pygame.event.get():
-  r=False if e.type==pygame.QUIT else r;data=f() if e.type==pygame.KEYDOWN and e.key==pygame.K_SPACE else data
-pygame.quit()
+import pygame
+import random
+
+GRID_SIZE = 10
+CELL_SIZE = 50
+WINDOW_SIZE = GRID_SIZE * CELL_SIZE
+REGENERATE_INTERVAL_MS = 5000
+REGENERATE_EVENT = pygame.USEREVENT + 1
+
+
+def generate_grid_colors(size):
+  return [
+    [
+      (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+      for _ in range(size)
+    ]
+    for _ in range(size)
+  ]
+
+
+def draw_grid(screen, colors, cell_size):
+  for row_index, row_colors in enumerate(colors):
+    for col_index, color in enumerate(row_colors):
+      pygame.draw.rect(
+        screen,
+        color,
+        (col_index * cell_size, row_index * cell_size, cell_size, cell_size),
+      )
+
+
+def main():
+  pygame.init()
+  screen = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE))
+  pygame.display.set_caption("Procedural Color Grid (Press SPACE to Regenerate)")
+  pygame.time.set_timer(REGENERATE_EVENT, REGENERATE_INTERVAL_MS)
+
+  colors = generate_grid_colors(GRID_SIZE)
+  running = True
+  clock = pygame.time.Clock()
+
+  while running:
+    screen.fill((0, 0, 0))
+    draw_grid(screen, colors, CELL_SIZE)
+    pygame.display.flip()
+
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        running = False
+      elif event.type == REGENERATE_EVENT:
+        colors = generate_grid_colors(GRID_SIZE)
+      elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+        colors = generate_grid_colors(GRID_SIZE)
+
+    clock.tick(60)
+
+  pygame.quit()
+
+
+if __name__ == "__main__":
+  main()
