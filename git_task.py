@@ -1,13 +1,38 @@
-import pygame,random
+import pygame
+import random
+
+# Initialize
 pygame.init()
-def f():
+
+# Function to generate a random 10x10 list of colors
+def generate_colors():
  return [[(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(10)] for _ in range(10)]
-s=pygame.display.set_mode((500,500));pygame.display.set_caption("Procedural Color Grid (Press SPACE to Regenerate)");data=f();r=True
-while r:
- s.fill((0,0,0))
- for y in range(10):
-  for x in range(10):pygame.draw.rect(s,data[y][x],(x*50,y*50,50,50))
- pygame.display.flip()
- for e in pygame.event.get():
-  r=False if e.type==pygame.QUIT else r;data=f() if e.type==pygame.KEYDOWN and e.key==pygame.K_SPACE else data
+
+# Screen setup
+screen = pygame.display.set_mode((500,500))
+# Screen title
+pygame.display.set_caption("Procedural Color Grid (Press SPACE to Regenerate)")
+# First generation of array of colors
+color_data = generate_colors()
+is_running = True
+
+while is_running:
+  screen.fill((0,0,0))
+  # Draws a square
+  for y in range(10):
+    for x in range(10):
+      color = color_data[y][x]
+      pygame.draw.rect(screen, color, (x * 50, y * 50, 50, 50))
+
+  pygame.display.flip()
+  # Regenerate every 5 seconds
+  pygame.time.delay(5000)
+ 
+  # Event listener for quit and regenerate colors
+  for event in pygame.event.get():
+    if event.type==pygame.QUIT: 
+      is_running=False
+    if event.key==pygame.K_SPACE:
+      data=generate_colors()
+
 pygame.quit()
