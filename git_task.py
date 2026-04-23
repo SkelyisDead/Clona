@@ -11,13 +11,18 @@ def make_empty_grid():
         matrix.append(row)
     return matrix
 
+# Pygame initialization stuff
 surface = pygame.display.set_mode((500,500))
 pygame.display.set_caption("Procedural Color Grid (Press SPACE to Regenerate)")
+
+# State
 data = make_empty_grid()
 running = True
 last_tick = pygame.time.get_ticks()
 
+# Main loop
 while running:
+    # Update
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -29,6 +34,7 @@ while running:
         data = make_empty_grid()
         last_tick = now
 
+    # Rendering
     surface.fill((0, 0, 0))
 
     for y in range(10):
