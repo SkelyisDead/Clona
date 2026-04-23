@@ -1,13 +1,34 @@
-import pygame,random
-pygame.init()
-def f():
- return [[(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(10)] for _ in range(10)]
-s=pygame.display.set_mode((500,500));pygame.display.set_caption("Procedural Color Grid (Press SPACE to Regenerate)");data=f();r=True
-while r:
- s.fill((0,0,0))
- for y in range(10):
-  for x in range(10):pygame.draw.rect(s,data[y][x],(x*50,y*50,50,50))
- pygame.display.flip()
- for e in pygame.event.get():
-  r=False if e.type==pygame.QUIT else r;data=f() if e.type==pygame.KEYDOWN and e.key==pygame.K_SPACE else data
-pygame.quit()
+import time
+
+def calculeaza_suma_numere(primul_numar, al_doilea_numar):
+    """
+    Această funcție primește două numere întregi și returnează suma lor.
+    Respectă regula numelor sugestive pentru funcții și variabile.
+    """
+    # Spațiere corectă în jurul operatorului '+'
+    rezultat = primul_numar + al_doilea_numar
+    return rezultat
+
+def main():
+    # Variabile cu nume descriptive în loc de a, b, c 
+    valoare_stanga = 5
+    valoare_dreapta = 10
+
+    print("Programul a pornit. Rezultatul se va regenera la fiecare 5 secunde.")
+
+    try:
+        while True:
+            # Apelăm funcția de calcul
+            suma_finala = calculeaza_suma_numere(valoare_stanga, valoare_dreapta)
+            
+            # Afișăm rezultatul cu o indentare corectă
+            print(f"[{time.strftime('%H:%M:%S')}] Suma numerelor este: {suma_finala}")
+            
+            # Cerința: Regenerarea rezultatului o dată la 5 secunde 
+            time.sleep(5)
+            
+    except KeyboardInterrupt:
+        print("\nProgram oprit de utilizator.")
+
+if __name__ == "__main__":
+    main()
