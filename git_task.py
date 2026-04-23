@@ -1,13 +1,51 @@
-import pygame,random
+import pygame
+import random
+import time
+
 pygame.init()
-def f():
- return [[(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(10)] for _ in range(10)]
-s=pygame.display.set_mode((500,500));pygame.display.set_caption("Procedural Color Grid (Press SPACE to Regenerate)");data=f();r=True
-while r:
- s.fill((0,0,0))
- for y in range(10):
-  for x in range(10):pygame.draw.rect(s,data[y][x],(x*50,y*50,50,50))
- pygame.display.flip()
- for e in pygame.event.get():
-  r=False if e.type==pygame.QUIT else r;data=f() if e.type==pygame.KEYDOWN and e.key==pygame.K_SPACE else data
+
+WINDOW_SIZE = 500
+GRID_SIZE = 10
+CELL_SIZE = WINDOW_SIZE // GRID_SIZE
+
+def generate_grid():
+    return [
+        [
+            (random.randint(0, 255),
+             random.randint(0, 255),
+             random.randint(0, 255))
+            for _ in range(GRID_SIZE)
+        ]
+        for _ in range(GRID_SIZE)
+    ]
+
+
+screen = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE))
+pygame.display.set_caption("Procedural Color Grid")
+
+running = True
+grid = generate_grid()
+last_update = time.time()
+
+while running:
+    screen.fill((0, 0, 0))
+
+    for y in range(GRID_SIZE):
+        for x in range(GRID_SIZE):
+            pygame.draw.rect(
+                screen,
+                grid[y][x],
+                (x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+            )
+
+    pygame.display.flip()
+
+    if time.time() - last_update >= 5:
+        grid = generate_grid()
+        last_update = time.time()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
 pygame.quit()
